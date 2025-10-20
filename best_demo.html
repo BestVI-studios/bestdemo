@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Best - The Best of the Best</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(to bottom, #001f3f, #002b5c);
+      color: white;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .topnav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #003366;
+      padding: 0.5em 1em;
+      border: 3px solid #005599;
+      box-shadow: 0 0 10px #002244;
+      border-radius: 8px;
+      margin: 0.5em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1em;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+      background: #005599;
+      border-radius: 5px;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: #004080;
+      top: 2.5em;
+      min-width: 200px;
+      z-index: 1;
+      border-radius: 5px;
+      box-shadow: 0 0 10px #001f3f;
+    }
+
+    .dropdown-content a {
+      display: block;
+      color: white;
+      padding: 0.5em;
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover {
+      background: #0066cc;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .hamburger {
+      font-size: 1.5em;
+      color: white;
+      cursor: pointer;
+    }
+
+    .side-panel {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #002244;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 2em;
+      z-index: 2;
+    }
+
+    .side-panel a {
+      padding: 1em;
+      text-decoration: none;
+      color: white;
+      display: block;
+    }
+
+    .side-panel a:hover {
+      background: #004080;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 0.5em;
+      right: 1em;
+      font-size: 2em;
+      color: white;
+      cursor: pointer;
+    }
+
+    header {
+      background: #003366;
+      color: white;
+      padding: 2em 1em 1em;
+      text-align: center;
+      border-bottom: 2px solid #005599;
+    }
+
+    header h1 {
+      font-size: 3em;
+      margin: 0;
+      animation: pulse 2s infinite;
+    }
+
+    header p {
+      font-size: 1.2em;
+      color: #66ccff;
+      margin-top: 0.5em;
+      font-style: italic;
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 5px #00bfff; }
+      50% { text-shadow: 0 0 20px #3399ff; }
+      100% { text-shadow: 0 0 5px #00bfff; }
+    }
+
+    .page {
+      display: none;
+      padding: 2em;
+      text-align: center;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .news-banner {
+      background: #005599;
+      padding: 1em;
+      margin-top: 1em;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #002244;
+      display: inline-block;
+      animation: glowBox 3s infinite;
+    }
+
+    @keyframes glowBox {
+      0% { box-shadow: 0 0 10px #00bfff; }
+      50% { box-shadow: 0 0 25px #3399ff; }
+      100% { box-shadow: 0 0 10px #00bfff; }
+    }
+
+    .news-banner h3 {
+      margin: 0 0 0.5em 0;
+      font-size: 1.2em;
+    }
+
+    .news-banner button {
+      background: #00bfff;
+      color: #001f3f;
+      border: none;
+      padding: 0.5em 1em;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .news-banner button:hover {
+      background: #33ccff;
+    }
+
+    .wave-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .wave {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      animation: glowWave 6s ease-in-out infinite;
+    }
+
+    @keyframes glowWave {
+      0% { filter: drop-shadow(0 0 5px #00bfff) drop-shadow(0 0 10px #3399ff); }
+      50% { filter: drop-shadow(0 0 15px #3399ff) drop-shadow(0 0 25px #66ccff); }
+      100% { filter: drop-shadow(0 0 5px #00bfff) drop-shadow(0 0 10px #3399ff); }
+    }
+
+    form#bookForm {
+      background: #003366;
+      padding: 1em;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #002244;
+      margin-top: 1em;
+    }
+
+    form#bookForm input,
+    form#bookForm textarea {
+      width: 100%;
+      margin: 0.5em 0;
+      padding: 0.5em;
+      border: none;
+      border-radius: 5px;
+    }
+
+    form#bookForm button {
+      background: #00bfff;
+      color: #001f3f;
+      font-weight: bold;
+      padding: 0.5em 1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    form#bookForm button:hover {
+      background: #33ccff;
+    }
+
+    .search-bar {
+      margin-top: 1em;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 0.5em;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .book-list {
+      display: grid;
+      gap: 1em;
+      margin-top: 1em;
+    }
+
+    .book {
+      background: #004080;
+      padding: 1em;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #002244;
+    }
+
+    .book img {
+      max-width: 100px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <div class="topnav">
+    <div class="hamburger" onclick="openPanel()">☰</div>
+    <div class="nav-links">
+      <a onclick="showPage('home')">Home</a>
+      <a onclick="showPage('about')">All About It</a>
+      <a onclick="showPage('join')">Join Us</a>
+      <a onclick="showPage('shop')">Shop</a>
+      <a onclick="showPage('events')">Events</a>
+      <div class="dropdown">
+        <a href="#">Other ▾</a>
+        <div class="dropdown-content">
+          <a onclick="showPage('games')">New Games Info</a>
+          <a onclick="showPage('support')">Customer Service</a>
+          <a onclick="showPage('books')">All Books Project</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <h1>Best</h1>
+    <p id="tagline">The Best of the Best</p>
+  </header>
+
+  <!-- Side Panel -->
+  <div id="sidePanel" class="side-panel">
+    <span class="close-btn" onclick="closePanel()">×</span>
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('about')">All About It</a>
+    <a onclick="showPage('join')">Join Us</a>
+    <a onclick="showPage('shop')">Shop</a>
+    <a onclick="showPage('events')">Events</a>
+    <a onclick="showPage('games')">New Games Info</a>
+    <a onclick="showPage('support')">Customer Service</a>
+    <a onclick="showPage('books')">All Books Project</a>
+  </div>
+
+  <!-- Pages -->
+  <div id="home" class="page active">
+    <h2>Welcome to Best</h2>
+    <div class="news-banner">
+      <h3>📰 Top News: RPG BLOCK is Here!</h3>
+      <button onclick="showPage('games')">Click here to Learn more!</button>
+    </div>
+  </div>
+
+  <div id="about" class="page">
+    <h2>All About It</h2>
+    <p>Best is a company made by three people. This was made to help people publish books, sell things, and give some of it to people in need! We appreciate donations!</p>
+    <p>So, this started on September 2023 when two friends decided to make a company about books because from that we can educate people. Later another friend came and said, "Let's also make games to expand the company."</p>
+    <p>But the problem started from there! We did not focus on books, which led to fights. First of all, we did not know what to name the company. One friend said, "Just name it VEA," which led to arguments.</p>
+    <p>Then we all decided to choose the name BEST. And that is how Best was made. Best stands for <strong>Books, Electronics, Savers, and Toys</strong>.</p>
+  </div>
+
+  <div id="join" class="page">
+    <h2>Join Us</h2>
+    <p>Want to be part of Best? We welcome creators, thinkers, and helpers from all walks of life.</p>
+  </div>
+
+  <div id="shop" class="page">
+    <h2>Shop</h2>
+    <p>Browse our products: books, games, clothes, furniture, and more!</p>
+
+    <div class="shop-grid" style="display: grid; gap: 1.5em; margin-top: 2em;">
+      <div class="shop-item" style="background: #004080; padding: 1em; border-radius: 12px; box-shadow: 0 0 15px #002244;">
+        <img src="https://via.placeholder.com/300x200?text=RPG+BLOCK" alt="RPG BLOCK" style="max-width: 100%; border-radius: 8px;" />
+        <h3>RPG BLOCK</h3>
+        <p>Modular RPG system. Click below to visit RPG BLOCK site.</p>
+        <div style="font-weight: bold; color: #00ffcc; margin: 0.5em 0;">$15.00</div>
+        <button onclick="window.open('https://sites.google.com/view/rpgblock-net/home','_blank')" style="background: #00bfff; color: #001f3f; border: none; padding: 0.5em 1em; font-weight: bold; border-radius: 5px; cursor: pointer;">Go to RPG BLOCK</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="events" class="page">
+    <h2>Events</h2>
+    <p>Stay tuned for upcoming expos, workshops, and community events hosted by Best.</p>
+  </div>
+
+  <div id="games" class="page">
+    <h2>New Games Info</h2>
+    <p>🎮 RPG BLOCK is our newest adventure game—blocky, bold, and built for fun. Explore worlds, build worlds, and have fun!</p>
+
+    <div style="margin-top: 1.5em;">
+      <button onclick="window.open('https://sites.google.com/view/rpgblock-net/home','_blank')" style="background: #00bfff; color: #001f3f; border: none; padding: 0.5em 1em; font-weight: bold; border-radius: 5px; cursor: pointer;">Visit RPG BLOCK</button>
+    </div>
+  </div>
+
+  <div id="support" class="page">
+    <h2>Customer Service</h2>
+    <p>Need help? Reach out to our support team for assistance with orders, accounts, and more.</p>
+  </div>
+
+  <div id="books" class="page">
+    <h2>All Books Project</h2>
+    <p>This is a living archive of every book Best has published—and every book the world has ever known. Add new books, search the archive, and see who discovered each one.</p>
+
+    <form id="bookForm">
+      <input type="text" placeholder="Book Title" required id="title" />
+      <input type="text" placeholder="Author" required id="author" />
+      <input type="text" placeholder="Publisher" required id="publisher" />
+      <input type="number" placeholder="Year Published" required id="year" />
+      <textarea placeholder="Short Description" required id="description"></textarea>
+      <input type="text" placeholder="Your Name (Contributor)" required id="contributor" />
+      <input type="url" placeholder="Cover Image URL" required id="cover" />
+      <button type="submit">Add Book</button>
+    </form>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search books by title, author, or contributor..." />
+    </div>
+
+    <div class="book-list" id="bookList"></div>
+  </div>
+
+  <!-- Glowing Wave -->
+  <div class="wave-container">
+    <svg class="wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path fill="#003366" fill-opacity="1" d="M0,160L60,165.3C120,171,240,181,360,176C480,171,600,149,720,160C840,171,960,213,1080,208C1200,203,1320,149,1380,122.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+    </svg>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function openPanel() {
+      document.getElementById("sidePanel").style.width = "250px";
+    }
+
+    function closePanel() {
+      document.getElementById("sidePanel").style.width = "0";
+    }
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      closePanel();
+    }
+
+    const mottos = [
+      "The Best of the Best",
+      "The Future",
+      "Center of the World",
+      "A New Big Picture",
+      "Around the World"
+    ];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const tagline = document.getElementById("tagline");
+      tagline.textContent = mottos[Math.floor(Math.random() * mottos.length)];
+    });
+
+    // All Books Project Logic
+    const bookForm = document.getElementById('bookForm');
+    const bookList = document.getElementById('bookList');
+    const searchInput = document.getElementById('searchInput');
+
+    function getBooks() {
+      return JSON.parse(localStorage.getItem('books') || '[]');
+    }
+
+    function saveBook(book) {
+      const books = getBooks();
+      books.push(book);
+      localStorage.setItem('books', JSON.stringify(books));
+    }
+
+    function calculateAge(year) {
+      const currentYear = new Date().getFullYear();
+      return currentYear - year;
+    }
+
+    function renderBooks(filter = '') {
+      const books = getBooks();
+      bookList.innerHTML = '';
+      books
+        .filter(book =>
+          book.title.toLowerCase().includes(filter.toLowerCase()) ||
+          book.author.toLowerCase().includes(filter.toLowerCase()) ||
+          book.contributor.toLowerCase().includes(filter.toLowerCase())
+        )
+        .forEach(book => {
+          const div = document.createElement('div');
+          div.className = 'book';
+          div.innerHTML = `
+            <h3>${book.title}</h3>
+            <p><strong>Author:</strong> ${book.author}</p>
+                        <p><strong>Publisher:</strong> ${book.publisher}</p>
+            <p><strong>Year:</strong> ${book.year} (${calculateAge(book.year)} years old)</p>
+            <p><strong>Added by:</strong> ${book.contributor}</p>
+            <p>${book.description}</p>
+            <img src="${book.cover}" alt="Cover of ${book.title}" />
+          `;
+          bookList.appendChild(div);
+        });
+    }
+
+    if (bookForm) {
+      bookForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const book = {
+          title: bookForm.title.value,
+          author: bookForm.author.value,
+          publisher: bookForm.publisher.value,
+          year: parseInt(bookForm.year.value),
+          description: bookForm.description.value,
+          contributor: bookForm.contributor.value,
+          cover: bookForm.cover.value
+        };
+        saveBook(book);
+        bookForm.reset();
+        renderBooks();
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        renderBooks(searchInput.value);
+      });
+    }
+
+    renderBooks();
+  </script>
+</body>
+</html>
